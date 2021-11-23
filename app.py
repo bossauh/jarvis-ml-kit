@@ -131,10 +131,14 @@ class Server(Monitor):
     @property
     def config(self) -> dict:
         config = loadJson(joinPath("./config.json"))[0]
+
         if utilities.inCloud():
             config["database"]["connectionString"] = os.environ["CONNECTION_STRING"]
+        else:
+            config["database"]["name"] = config["database"]["name"] + "-dev"
+
         return config
-        
+
 
 @click.command()
 @click.option("--port", "-p", default=None, help="Port to use. Defaults to the port inside config.json")
