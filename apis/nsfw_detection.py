@@ -55,11 +55,11 @@ def constructNsfw(server: "Server") -> Blueprint:
         data = request.json
         data["bytes"] = base64.b64decode(data["bytes"])
 
-        nudenet = NudeClassifier()
+        # nudenet = NudeClassifier()
 
-        method = nudenet.classify
-        if data["contentType"].startswith("video/"):
-            method = nudenet.classify_video
+        # method = nudenet.classify
+        # if data["contentType"].startswith("video/"):
+        #     method = nudenet.classify_video
 
         results = {"data": {}, "path": None,
                    "contentType": data["contentType"]}
@@ -86,10 +86,16 @@ def constructNsfw(server: "Server") -> Blueprint:
                 clip.close()
 
                 # Update method and metadata
-                method = nudenet.classify_video
+                # method = nudenet.classify_video
                 data["contentType"] = "video/mp4"
 
             results["contentType"] = data["contentType"]
+        
+            # Delete
+            if oldPath:
+                os.unlink(oldPath)
+            os.unlink(path)
+            return makeResponse()
 
             # Perform classification
             try:
