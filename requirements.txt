@@ -1,6 +1,10 @@
 # Nudity Detection
 nudenet
 
+# Image/Video
+imagehash
+videohash
+
 # Database and Server
 waitress
 psutil
