@@ -1,0 +1,14 @@
+# Nudity Detection
+nudenet
+
+# Database and Server
+waitress
+psutil
+flask[async]
+
+# Extras
+fluxhelper
+moviepy
+pylint
+autopep8
+schema
