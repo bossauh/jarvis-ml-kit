@@ -3,6 +3,7 @@ import gc
 import sys
 import threading
 import time
+import os
 
 import click
 import psutil
@@ -129,8 +130,11 @@ class Server(Monitor):
 
     @property
     def config(self) -> dict:
-        return loadJson(joinPath("./config.json"))[0]
-
+        config = loadJson(joinPath("./config.json"))[0]
+        if utilities.inCloud():
+            config["database"]["connectionString"] = os.environ["CONNECTION_STRING"]
+        return config
+        
 
 @click.command()
 @click.option("--port", "-p", default=None, help="Port to use. Defaults to the port inside config.json")
