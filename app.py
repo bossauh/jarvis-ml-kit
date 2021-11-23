@@ -71,13 +71,13 @@ class Monitor:
 
 class Server(Monitor):
     def __init__(self, port: int = None, doMonitor: bool = False, **kwargs) -> None:
+        self.kwargs = kwargs
         self.logging = Logger(debug=True)
         self.app = Flask(__name__)
         self.limiter = RateLimiter()
         self.validator = RouteValidator()
         self.port = port if port else self.config["server"]["port"]
         self.doMonitor = doMonitor
-        self.kwargs = kwargs
 
         # Initialize database
         self.dbClient = Database(
