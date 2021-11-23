@@ -70,13 +70,14 @@ class Monitor:
 
 
 class Server(Monitor):
-    def __init__(self, port: int = None, doMonitor: bool = False) -> None:
+    def __init__(self, port: int = None, doMonitor: bool = False, **kwargs) -> None:
         self.logging = Logger(debug=True)
         self.app = Flask(__name__)
         self.limiter = RateLimiter()
         self.validator = RouteValidator()
         self.port = port if port else self.config["server"]["port"]
         self.doMonitor = doMonitor
+        self.kwargs = kwargs
 
         # Initialize database
         self.dbClient = Database(
@@ -135,7 +136,9 @@ class Server(Monitor):
         if utilities.inCloud():
             config["database"]["connectionString"] = os.environ["CONNECTION_STRING"]
         else:
-            config["database"]["name"] = config["database"]["name"] + "-dev"
+            
+            if self.kwargs.get("overwriteConfig", True):
+                config["database"]["name"] = config["database"]["name"] + "-dev"
 
         return config
 
@@ -145,9 +148,10 @@ class Server(Monitor):
 @click.option("--generate_key", is_flag=True, help="Generate an api key and print it out on launch.")
 @click.option("-d", is_flag=True, help="Don't launch the server. You'd normally do this if you're doing something like just generating a key.")
 @click.option("-m", "--monitor", is_flag=True, help="Starts the server with monitoring enabled.")
-def main(port, generate_key, d, monitor) -> None:
+@click.option("-o", is_flag=True, help="Don't overwrite the config if we're just in development")
+def main(port, generate_key, d, monitor, o) -> None:
 
-    server = Server(port, doMonitor=monitor)
+    server = Server(port, doMonitor=monitor, overwriteConfig=not o)
     if generate_key:
         key = server.apiSecurity.generateKey()
         server.logging.success(f"Successfully generated API key: {key}")
