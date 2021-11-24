@@ -6,7 +6,6 @@ imagehash
 videohash
 
 # Database and Server
-waitress
 psutil
 flask[async]
 gunicorn

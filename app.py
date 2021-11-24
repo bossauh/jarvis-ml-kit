@@ -10,7 +10,6 @@ import psutil
 from flask import Flask
 from fluxhelper import Database, Logger, joinPath, loadJson
 from nudenet import NudeClassifier
-from waitress import serve
 
 from apis import constructNsfw
 from library import APISecurity, RateLimiter, RouteValidator, utilities
@@ -114,15 +113,6 @@ class Server(Monitor):
             self.logging.debug(
                 f"In the cloud, running server using gunicorn")
             return self.app
-            serve(
-                self.app,
-                listen=f"*:{self.port}",
-                trusted_proxy="*",
-                trusted_proxy_headers="x-forwarded-for x-forwarded-proto x-forwarded-port",
-                log_untrusted_proxy_headers=True,
-                clear_untrusted_proxy_headers=True,
-                threads=4
-            )
         else:
             host = self.config["server"]["host"]
             self.logging.debug(
@@ -147,8 +137,6 @@ class Server(Monitor):
 def getApp() -> Flask:
     """Initialize the server with cloud settings and return the app. This is used by gunicorn."""
     server = Server(None, doMonitor=True)
-
-    server.logging.debug("Using gunicorn")
     return server.run()
 
 
