@@ -9,6 +9,7 @@ videohash
 waitress
 psutil
 flask[async]
+gunicorn
 
 # Extras
 fluxhelper
