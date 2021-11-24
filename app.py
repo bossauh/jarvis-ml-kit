@@ -143,6 +143,12 @@ class Server(Monitor):
         return config
 
 
+def getApp() -> Flask:
+    """Initialize the server with cloud settings and return the app. This is used by gunicorn."""
+    server = Server(None, doMonitor=True)
+    return server.app
+
+
 @click.command()
 @click.option("--port", "-p", default=None, help="Port to use. Defaults to the port inside config.json")
 @click.option("--generate_key", is_flag=True, help="Generate an api key and print it out on launch.")
