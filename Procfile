@@ -1,1 +1,1 @@
-web: python app.py -p $PORT -m
+web: gunicorn app:getApp()
