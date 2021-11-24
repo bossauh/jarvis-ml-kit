@@ -112,7 +112,8 @@ class Server(Monitor):
 
         if utilities.inCloud():
             self.logging.debug(
-                f"In the cloud, running server using waitress on port {self.port}")
+                f"In the cloud, running server using gunicorn")
+            return self.app
             serve(
                 self.app,
                 listen=f"*:{self.port}",
@@ -148,7 +149,7 @@ def getApp() -> Flask:
     server = Server(None, doMonitor=True)
 
     server.logging.debug("Using gunicorn")
-    return server.app
+    return server.run()
 
 
 @click.command()
