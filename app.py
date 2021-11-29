@@ -136,7 +136,7 @@ class Server(Monitor):
 
 def getApp() -> Flask:
     """Initialize the server with cloud settings and return the app. This is used by gunicorn."""
-    server = Server(None, doMonitor=True)
+    server = Server(None, doMonitor=False)
     return server.run()
 
 
