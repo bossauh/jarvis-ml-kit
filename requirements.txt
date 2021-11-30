@@ -4,6 +4,7 @@ nudenet
 # Image/Video
 imagehash
 videohash
+ffmpy
 
 # Database and Server
 psutil
@@ -12,7 +13,6 @@ gunicorn
 
 # Extras
 fluxhelper
-moviepy
 pylint
 autopep8
 schema

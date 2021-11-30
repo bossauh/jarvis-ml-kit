@@ -4,10 +4,10 @@ import base64
 import gc
 import os
 import tempfile
+import ffmpy
 from typing import TYPE_CHECKING
 
 import imagehash
-import moviepy.editor as mp
 from flask import Blueprint, request
 from fluxhelper.flask import makeResponse
 from library.schemas import *
@@ -90,12 +90,14 @@ def constructNsfw(server: "Server") -> Blueprint:
             if suffix:
                 server.logging.debug("Converting GIF to MP4")
                 oldPath = path
-
-                clip = mp.VideoFileClip(path)
                 path = f".tmp/{os.path.basename(path)[:-4]}.mp4"
 
-                clip.write_videofile(path)
-                clip.close()
+                ff = ffmpy.FFmpeg(
+                    inputs={oldPath: None},
+                    outputs={path: None}
+                )
+                ff.run()
+
 
                 # Update method and metadata
                 method = "vid"
