@@ -149,9 +149,9 @@ def getApp() -> Flask:
 @click.option("-m", "--monitor", is_flag=True, help="Starts the server with monitoring enabled.")
 @click.option("-o", is_flag=True, help="Don't overwrite the config if we're just in development")
 @click.option("-ig", "--ignore-cloud", is_flag=True, help="Ignore the cloud environment and run the server as if it's running locally.")
-def main(port, generate_key, d, monitor, o, ig) -> None:
+def main(port, generate_key, d, monitor, o, ignore_cloud) -> None:
 
-    server = Server(port, doMonitor=monitor, overwriteConfig=not o, ignoreCloud=ig)
+    server = Server(port, doMonitor=monitor, overwriteConfig=not o, ignoreCloud=ignore_cloud)
     if generate_key:
         key = server.apiSecurity.generateKey()
         server.logging.success(f"Successfully generated API key: {key}")
