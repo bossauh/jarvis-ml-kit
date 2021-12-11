@@ -77,6 +77,7 @@ class Server(Monitor):
         self.validator = RouteValidator()
         self.port = port if port else self.config["server"]["port"]
         self.doMonitor = doMonitor
+        self.ignoreCloud = kwargs.get("ignoreCloud", False)
 
         # Initialize database
         self.dbClient = Database(
@@ -109,7 +110,7 @@ class Server(Monitor):
         if self.doMonitor:
             self.monitor()
 
-        if utilities.inCloud():
+        if utilities.inCloud() and not self.ignoreCloud:
             self.logging.debug(
                 f"In the cloud, running server using gunicorn")
             return self.app
@@ -146,9 +147,10 @@ def getApp() -> Flask:
 @click.option("-d", is_flag=True, help="Don't launch the server. You'd normally do this if you're doing something like just generating a key.")
 @click.option("-m", "--monitor", is_flag=True, help="Starts the server with monitoring enabled.")
 @click.option("-o", is_flag=True, help="Don't overwrite the config if we're just in development")
-def main(port, generate_key, d, monitor, o) -> None:
+@click.option("-ig", "--ignore-cloud", is_flag=True, help="Ignore the cloud environment and run the server as if it's running locally.")
+def main(port, generate_key, d, monitor, o, ig) -> None:
 
-    server = Server(port, doMonitor=monitor, overwriteConfig=not o)
+    server = Server(port, doMonitor=monitor, overwriteConfig=not o, ignoreCloud=ig)
     if generate_key:
         key = server.apiSecurity.generateKey()
         server.logging.success(f"Successfully generated API key: {key}")
