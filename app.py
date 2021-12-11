@@ -125,12 +125,13 @@ class Server(Monitor):
     def config(self) -> dict:
         config = loadJson(joinPath("./config.json"))[0]
 
-        if utilities.inCloud():
+        if utilities.inCloud() and not self.ignoreCloud:
             config["database"]["connectionString"] = os.environ["CONNECTION_STRING"]
         else:
             
             if self.kwargs.get("overwriteConfig", True):
                 config["database"]["name"] = config["database"]["name"] + "-dev"
+                self.logging.debug(f"Overwriting database name to {config['database']['name']}")
 
         return config
 
