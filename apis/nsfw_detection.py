@@ -133,7 +133,7 @@ def constructNsfw(server: "Server") -> Blueprint:
                     elif method == "vid":
                         method = nudenet.classify_video
 
-                    res = method(path, batch_size=2)
+                    res = method(path, batch_size=6)
                     del nudenet
                     gc.collect()
 
