@@ -87,7 +87,7 @@ def constructNsfw(server: "Server") -> Blueprint:
             tmp.close()
 
             oldPath = None
-            if suffix:
+            if suffix == ".gif":
                 server.logging.debug("Converting GIF to MP4")
                 oldPath = path
                 path = f".tmp/{os.path.basename(path)[:-4]}.mp4"
