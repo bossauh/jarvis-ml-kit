@@ -25,7 +25,7 @@ def constructNsfw(server: "Server") -> Blueprint:
     @app.route("/classify", methods=["GET"])
     @server.limiter.limit(2, key="ratelimitKey")
     @server.validator.validate(NSFW_DETECTION_CLASSIFY)
-    async def classify():
+    def classify():
 
         """
         Classifies an image or video whether it is NSFW or not.
