@@ -1,10 +1,9 @@
 # Nudity Detection
-nudenet
+git+https://github.com/GantMan/nsfw_model.git
+fastnsfw
 
 # Image/Video
 imagehash
-videohash
-ffmpy
 
 # Database and Server
 psutil
@@ -16,3 +15,4 @@ fluxhelper
 pylint
 autopep8
 schema
+validators
