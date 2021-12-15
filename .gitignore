@@ -6,6 +6,7 @@ test.mp4
 test.png
 test_diff.mp4
 test_diff.png
+/apis/models/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
