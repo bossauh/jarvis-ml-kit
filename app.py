@@ -1,5 +1,4 @@
 import datetime
-import gc
 import sys
 import threading
 import time
@@ -9,7 +8,6 @@ import click
 import psutil
 from flask import Flask
 from fluxhelper import Database, Logger, joinPath, loadJson
-from nudenet import NudeClassifier
 
 from apis import constructNsfw
 from library import APISecurity, RateLimiter, RouteValidator, utilities
@@ -90,15 +88,8 @@ class Server(Monitor):
 
         # Register blueprints
         self.registerBlueprints()
-        self.postInit()
 
         super().__init__()
-
-    def postInit(self) -> None:
-
-        x = NudeClassifier()
-        del x
-        gc.collect()
 
     def registerBlueprints(self) -> None:
         nsfw = constructNsfw(self)
