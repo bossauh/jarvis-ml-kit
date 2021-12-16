@@ -13,8 +13,8 @@ if TYPE_CHECKING:
     from ..app import Server
 
 
-MODEL_PATH = "./apis/models/nsfw.299x299.h5"
-IMG_SIZE = 299
+MODEL_PATH = "./apis/models/nsfw_mobilenet2.224x224.h5"
+IMG_SIZE = 224
 
 
 def constructNsfw(server: "Server") -> Blueprint:
@@ -23,8 +23,8 @@ def constructNsfw(server: "Server") -> Blueprint:
         model=MODEL_PATH,
         logging=server.logging,
         imgSize=(IMG_SIZE, IMG_SIZE),
-        frameUniqueness=25,
-        workers=20
+        frameUniqueness=30,
+        workers=4
     )
 
     @app.route("/classify", methods=["GET"])
